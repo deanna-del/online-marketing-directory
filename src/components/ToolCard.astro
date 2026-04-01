@@ -1,0 +1,291 @@
+---
+interface Props {
+  slug: string;
+  title: string;
+  logo: string;
+  category: string;
+  tagline: string;
+  deannasPick: boolean;
+  freePlan: 'Yes' | 'No' | 'Free Trial Only';
+  startingPrice: string;
+  affiliateUrl: string;
+  categorySlug?: string;
+  'data-title'?: string;
+  'data-category'?: string;
+  'data-subcategory'?: string;
+  'data-freePlan'?: string;
+}
+
+const {
+  slug,
+  title,
+  logo,
+  category,
+  tagline,
+  deannasPick,
+  freePlan,
+  startingPrice,
+  affiliateUrl,
+  categorySlug,
+} = Astro.props;
+
+const toolUrl = categorySlug ? `/tools/${categorySlug}/${slug}` : `/tools/${slug}`;
+---
+
+<article
+  class="tool-card"
+  data-title={title.toLowerCase()}
+  data-category={category}
+  data-subcategory={Astro.props['data-subcategory'] || ''}
+  data-freePlan={freePlan}
+>
+  <div class="tool-card-header">
+    <div class="tool-logo-wrap">
+      {logo ? (
+        <img src={logo} alt={`${title} logo`} class="tool-logo" width="48" height="48" loading="lazy" />
+      ) : (
+        <div class="tool-logo-placeholder" aria-hidden="true">
+          {title.charAt(0)}
+        </div>
+      )}
+    </div>
+    <div class="tool-badges">
+      {deannasPick && (
+        <span class="badge badge-pick" title="Deanna's Pick">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          Deanna's Pick
+        </span>
+      )}
+      {freePlan === 'Yes' && (
+        <span class="badge badge-free">Free Plan</span>
+      )}
+      {freePlan === 'Free Trial Only' && (
+        <span class="badge badge-trial">Free Trial</span>
+      )}
+    </div>
+  </div>
+
+  <div class="tool-card-body">
+    <h3 class="tool-title">
+      <a href={toolUrl}>{title}</a>
+    </h3>
+    <p class="tool-category">{category}</p>
+    <p class="tool-tagline">{tagline}</p>
+  </div>
+
+  <div class="tool-card-footer">
+    <div class="tool-price">
+      <span class="price-label">From</span>
+      <span class="price-value">{startingPrice}</span>
+    </div>
+    <div class="tool-actions">
+      <a href={affiliateUrl} class="btn btn-primary btn-sm" target="_blank" rel="noopener noreferrer sponsored">
+        View Tool
+      </a>
+      <a href={toolUrl} class="btn btn-ghost btn-sm">
+        Read Review
+      </a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .tool-card {
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+  }
+
+  .tool-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 31, 84, 0.1);
+    border-color: #93D2DE;
+    transform: translateY(-1px);
+  }
+
+  .tool-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .tool-logo-wrap {
+    flex-shrink: 0;
+  }
+
+  .tool-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    object-fit: contain;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    padding: 4px;
+  }
+
+  .tool-logo-placeholder {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: var(--color-accent-light);
+    color: var(--color-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+  }
+
+  .tool-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    justify-content: flex-end;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .badge-pick {
+    background: #E3F4F8;
+    color: #034078;
+    border: 1px solid #B3DDE8;
+  }
+
+  .badge-free {
+    background: #E3F4F8;
+    color: #034078;
+    border: 1px solid #B3DDE8;
+  }
+
+  .badge-trial {
+    background: #EAF2F8;
+    color: #374151;
+    border: 1px solid #B3DDE8;
+  }
+
+  .tool-card-body {
+    flex: 1;
+  }
+
+  .tool-title {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    margin: 0 0 0.2rem;
+    line-height: 1.3;
+  }
+
+  .tool-title a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .tool-title a:hover {
+    color: var(--color-accent);
+  }
+
+  .tool-category {
+    font-size: 0.875rem;
+    color: var(--color-accent);
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .tool-tagline {
+    font-size: 1rem;
+    color: var(--color-text);
+    margin: 0;
+    line-height: 1.65;
+  }
+
+  .tool-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-border);
+    flex-wrap: wrap;
+  }
+
+  .tool-price {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .price-label {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .price-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .tool-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  }
+
+  .btn-sm {
+    padding: 0.45rem 0.875rem;
+    font-size: 0.9375rem;
+    font-weight: 700;
+  }
+
+  .btn-primary {
+    background: #1282A2;
+    color: #ffffff;
+  }
+
+  .btn-primary:hover {
+    background: #0e6b87;
+    box-shadow: 0 2px 8px rgba(18, 130, 162, 0.3);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: #1282A2;
+    border: 1px solid #B3DDE8;
+  }
+
+  .btn-ghost:hover {
+    background: #E3F4F8;
+  }
+</style>

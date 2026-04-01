@@ -1,0 +1,126 @@
+backend:
+  name: github
+  repo: YOUR_GITHUB_USERNAME/online-marketing-directory
+  branch: main
+
+media_folder: public/uploads
+public_folder: /uploads
+
+publish_mode: editorial_workflow
+
+collections:
+  - name: tools
+    label: Tools
+    label_singular: Tool
+    folder: src/content/tools
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Tool Name", name: "title", widget: "string" }
+      - { label: "Logo", name: "logo", widget: "image" }
+      - { label: "Affiliate URL", name: "affiliateUrl", widget: "string" }
+      - { label: "One-Line Description (max 15 words)", name: "tagline", widget: "string" }
+      - { label: "Full Description", name: "description", widget: "text" }
+      - label: "Primary Category"
+        name: "category"
+        widget: "select"
+        options:
+          - "Business Foundation"
+          - "Marketing & Lead Generation"
+          - "Content Creation"
+          - "AI Tools by Use Case"
+          - "Operations & Productivity"
+      - label: "Subcategory"
+        name: "subcategory"
+        widget: "select"
+        options:
+          - "All-in-One Platforms"
+          - "Course & Membership Platforms"
+          - "Coaching & Client Management"
+          - "Payment & Checkout Tools"
+          - "Landing Page & Funnel Builders"
+          - "Email Marketing Platforms"
+          - "Social Media Management"
+          - "SEO & Analytics"
+          - "Podcast Tools"
+          - "AI Writing & Content Tools"
+          - "Design & Visual Tools"
+          - "Video Creation & Editing"
+          - "Screen Recording"
+          - "Webinar & Live Event Tools"
+          - "AI Writing & Copywriting"
+          - "AI Image & Design Generation"
+          - "AI Video & Avatar Tools"
+          - "AI Automation & Workflows"
+          - "AI Research & SEO"
+          - "Scheduling & Booking"
+          - "Project Management"
+          - "File Storage & Delivery"
+          - "Contract & Proposal Tools"
+      - { label: "Starting Price", name: "startingPrice", widget: "string" }
+      - label: "Free Plan Available"
+        name: "freePlan"
+        widget: "select"
+        options: ["Yes", "No", "Free Trial Only"]
+      - { label: "Pricing Page URL", name: "pricingUrl", widget: "string", required: false }
+      - { label: "Best For", name: "bestFor", widget: "text" }
+      - { label: "Not Ideal For", name: "notIdealFor", widget: "text" }
+      - { label: "Deanna's Pick", name: "deannasPick", widget: "boolean", default: false }
+      - label: "Key Features (max 5)"
+        name: "keyFeatures"
+        widget: "list"
+        required: false
+        max: 5
+      - { label: "Integrations", name: "integrations", widget: "text", required: false }
+      - { label: "Screenshot", name: "screenshot", widget: "image", required: false }
+      - { label: "Affiliate Relationship", name: "affiliateRelationship", widget: "boolean", default: false, required: false }
+      - { label: "Body", name: "body", widget: "markdown", required: false }
+
+  - name: training
+    label: Recommended Training
+    label_singular: Training Program
+    folder: src/content/training
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Program Name", name: "title", widget: "string" }
+      - { label: "Creator / Instructor Name", name: "creator", widget: "string" }
+      - { label: "Creator Photo or Program Image", name: "image", widget: "image" }
+      - { label: "Affiliate URL", name: "affiliateUrl", widget: "string" }
+      - { label: "One-Line Description (max 15 words)", name: "tagline", widget: "string" }
+      - { label: "Full Description", name: "description", widget: "text" }
+      - label: "Training Category"
+        name: "category"
+        widget: "select"
+        options:
+          - "Marketing & Business Growth"
+          - "Tech & Tools Training"
+          - "Mindset & Coaching Skills"
+          - "Community Building"
+      - label: "Format"
+        name: "format"
+        widget: "select"
+        options: ["Course", "Membership", "Mastermind", "Coaching Program", "Live Workshop"]
+      - { label: "Price Point", name: "pricePoint", widget: "string" }
+      - { label: "Time Commitment", name: "timeCommitment", widget: "string" }
+      - { label: "Best For", name: "bestFor", widget: "text" }
+      - { label: "Not Ideal For", name: "notIdealFor", widget: "text" }
+      - { label: "Deanna's Pick", name: "deannasPick", widget: "boolean", default: false }
+      - { label: "Deanna's Note", name: "deannasNote", widget: "text", required: false }
+      - { label: "Affiliate Relationship", name: "affiliateRelationship", widget: "boolean", default: false, required: false }
+      - { label: "Body", name: "body", widget: "markdown", required: false }
+
+  - name: blog
+    label: Blog Posts
+    label_singular: Blog Post
+    folder: src/content/blog
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Publish Date", name: "pubDate", widget: "datetime" }
+      - { label: "Author", name: "author", widget: "string" }
+      - { label: "Featured Image", name: "featuredImage", widget: "image", required: false }
+      - { label: "Tags", name: "tags", widget: "list", required: false }
+      - { label: "Body", name: "body", widget: "markdown" }

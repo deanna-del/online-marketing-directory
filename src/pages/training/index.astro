@@ -1,0 +1,164 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TrainingCard from '../../components/TrainingCard.astro';
+import { getCollection } from 'astro:content';
+import { slugify } from '../../utils/slugify';
+
+const allTraining = await getCollection('training');
+
+const trainingCategories = [
+  'Marketing & Business Growth',
+  'Tech & Tools Training',
+  'Mindset & Coaching Skills',
+  'Community Building',
+];
+
+// Group by category
+const grouped = trainingCategories
+  .map((cat) => ({
+    category: cat,
+    programs: allTraining.filter((t) => t.data.category === cat),
+  }))
+  .filter((g) => g.programs.length > 0);
+---
+
+<BaseLayout
+  title="Recommended Training — Online Marketing Directory"
+  description="Honest reviews of the best online courses, memberships, masterminds, and coaching programs for coaches, course creators, and online business owners."
+>
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-title">Recommended Training</h1>
+      <p class="page-intro">
+        The courses, memberships, and programs that I personally recommend to coaches, course creators,
+        and consultants who want to build and scale their online businesses. Every program here has been
+        vetted for quality, value, and real-world results.
+      </p>
+    </div>
+  </div>
+
+  <div class="container training-page-body section">
+    <!-- Category filter buttons -->
+    <div class="category-filters" role="group" aria-label="Filter by category">
+      <button class="filter-btn active" data-filter="all" type="button">All Training</button>
+      {trainingCategories.map((cat) => (
+        <button class="filter-btn" data-filter={cat} type="button">{cat}</button>
+      ))}
+    </div>
+
+    <!-- All programs grid -->
+    <div class="training-grid grid-2" id="training-grid">
+      {allTraining.map((program) => (
+        <div data-category={program.data.category} class="training-grid-item">
+          <TrainingCard
+            slug={program.slug}
+            title={program.data.title}
+            creator={program.data.creator}
+            image={program.data.image}
+            format={program.data.format}
+            category={program.data.category}
+            tagline={program.data.tagline}
+            deannasPick={program.data.deannasPick}
+            pricePoint={program.data.pricePoint}
+            affiliateUrl={program.data.affiliateUrl}
+            categorySlug={slugify(program.data.category)}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const items = document.querySelectorAll('.training-grid-item');
+
+  filterBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.dataset.filter;
+
+      items.forEach((item) => {
+        if (filter === 'all' || item.dataset.category === filter) {
+          (item as HTMLElement).style.display = '';
+        } else {
+          (item as HTMLElement).style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .page-header {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    padding: 3rem 0 2.5rem;
+  }
+
+  .page-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .page-intro {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    max-width: 680px;
+    line-height: 1.65;
+  }
+
+  .training-page-body {
+    padding-top: 2.5rem;
+  }
+
+  .category-filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .filter-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    font-family: inherit;
+  }
+
+  .filter-btn:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  .filter-btn.active {
+    background: var(--color-accent);
+    color: #ffffff;
+    border-color: var(--color-accent);
+  }
+
+  .training-grid {
+    align-items: start;
+  }
+
+  @media (max-width: 640px) {
+    .category-filters {
+      gap: 0.375rem;
+    }
+
+    .filter-btn {
+      font-size: 0.8125rem;
+      padding: 0.375rem 0.75rem;
+    }
+  }
+</style>

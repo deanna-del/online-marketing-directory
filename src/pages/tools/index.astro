@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ToolCard from '../../components/ToolCard.astro';
+import ToolSearch from '../../components/ToolSearch.astro';
+import { getCollection } from 'astro:content';
+import { slugify } from '../../utils/slugify';
+
+const allTools = await getCollection('tools');
+
+const toolsData = allTools.map((tool) => ({
+  slug: tool.slug,
+  title: tool.data.title,
+  logo: tool.data.logo,
+  category: tool.data.category,
+  subcategory: tool.data.subcategory,
+  tagline: tool.data.tagline,
+  deannasPick: tool.data.deannasPick,
+  freePlan: tool.data.freePlan,
+  startingPrice: tool.data.startingPrice,
+  affiliateUrl: tool.data.affiliateUrl,
+  categorySlug: slugify(tool.data.category),
+}));
+
+// Group by category for anchor-linked sections
+const categories = [
+  'Business Foundation',
+  'Marketing & Lead Generation',
+  'Content Creation',
+  'AI Tools by Use Case',
+  'Operations & Productivity',
+];
+---
+
+<BaseLayout
+  title="Tool Directory — Online Marketing Directory"
+  description="Browse 50+ honest reviews of marketing tools, platforms, and apps for online coaches, course creators, and consultants. Filter by category, price, and free plan availability."
+>
+  <div class="page-header">
+    <div class="container">
+      <h1 class="page-title">Tool Directory</h1>
+      <p class="page-intro">
+        Honest, in-depth reviews of the marketing tools, platforms, and apps that help
+        coaches, course creators, and consultants build and grow profitable online businesses.
+        Every tool listed here has been personally vetted or thoroughly researched.
+      </p>
+    </div>
+  </div>
+
+  <div class="container tools-page-body section">
+    <ToolSearch tools={toolsData} />
+
+    <div class="tools-grid grid-3" id="tools-grid">
+      {allTools.map((tool) => (
+        <ToolCard
+          slug={tool.slug}
+          title={tool.data.title}
+          logo={tool.data.logo}
+          category={tool.data.category}
+          tagline={tool.data.tagline}
+          deannasPick={tool.data.deannasPick}
+          freePlan={tool.data.freePlan}
+          startingPrice={tool.data.startingPrice}
+          affiliateUrl={tool.data.affiliateUrl}
+          categorySlug={slugify(tool.data.category)}
+          data-subcategory={tool.data.subcategory}
+        />
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-header {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    padding: 3rem 0 2.5rem;
+  }
+
+  .page-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--color-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .page-intro {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    max-width: 680px;
+    line-height: 1.65;
+  }
+
+  .tools-page-body {
+    padding-top: 2.5rem;
+  }
+
+  .tools-grid {
+    min-height: 200px;
+  }
+</style>

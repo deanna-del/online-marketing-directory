@@ -1,0 +1,136 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="/" class="footer-logo">
+        <span class="footer-logo-icon" aria-hidden="true">&#9670;</span>
+        Online Marketing Directory
+      </a>
+      <p class="footer-tagline">
+        Honest reviews of the tools and training programs that help online coaches,
+        course creators, and consultants build profitable businesses.
+      </p>
+      <p class="footer-disclosure">
+        This site contains affiliate links. See our{' '}
+        <a href="/affiliate-disclosure">Affiliate Disclosure</a> for details.
+      </p>
+    </div>
+
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <ul class="footer-links">
+        <li><a href="/affiliate-disclosure">Affiliate Disclosure</a></li>
+        <li><a href="/privacy-policy">Privacy Policy</a></li>
+        <li><a href="/terms-of-service">Terms of Service</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="footer-bottom">
+    <p>&copy; {year} Online Marketing Directory. All rights reserved.</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-primary);
+    color: #d1d5db;
+    margin-top: auto;
+  }
+
+  .footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .footer-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-logo-icon {
+    color: #1282A2;
+  }
+
+  .footer-tagline {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #9ca3af;
+    max-width: 400px;
+    margin: 0.5rem 0;
+  }
+
+  .footer-disclosure {
+    font-size: 0.8125rem;
+    color: #6b7280;
+    margin-top: 0.75rem;
+  }
+
+  .footer-disclosure a {
+    color: #5BB8CC;
+    text-decoration: underline;
+  }
+
+  .footer-nav {
+    padding-top: 0.25rem;
+  }
+
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-links a {
+    color: #9ca3af;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.15s;
+  }
+
+  .footer-links a:hover {
+    color: #ffffff;
+  }
+
+  .footer-bottom {
+    border-top: 1px solid #374151;
+    text-align: center;
+    padding: 1rem 1.5rem;
+  }
+
+  .footer-bottom p {
+    font-size: 0.8125rem;
+    color: #6b7280;
+    margin: 0;
+  }
+
+  @media (max-width: 640px) {
+    .footer-inner {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .footer-links {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
+    }
+  }
+</style>

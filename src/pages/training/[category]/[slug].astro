@@ -1,0 +1,606 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import AffiliateDisclosure from '../../../components/AffiliateDisclosure.astro';
+import { getCollection } from 'astro:content';
+import { slugify } from '../../../utils/slugify';
+
+export async function getStaticPaths() {
+  const programs = await getCollection('training');
+  return programs.map((program) => ({
+    params: {
+      category: slugify(program.data.category),
+      slug: program.slug,
+    },
+    props: { program },
+  }));
+}
+
+const { program } = Astro.props;
+const { data } = program;
+const { Content } = await program.render();
+
+// SEO
+const rawTitle = `${data.title} Review: ${data.tagline}`;
+const seoTitle = rawTitle.length > 60 ? rawTitle.substring(0, 57) + '...' : rawTitle;
+const rawDesc = `${data.title} by ${data.creator} — ${data.tagline.toLowerCase()}. ${data.pricePoint}. Read the full review.`;
+const seoDesc = rawDesc.length > 155 ? rawDesc.substring(0, 152) + '...' : rawDesc;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Course',
+  name: data.title,
+  description: data.description,
+  provider: {
+    '@type': 'Person',
+    name: data.creator,
+  },
+  offers: {
+    '@type': 'Offer',
+    description: data.pricePoint,
+  },
+};
+---
+
+<BaseLayout title={seoTitle} description={seoDesc} schema={schema}>
+  <article class="training-page">
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li><a href="/">Home</a></li>
+          <li aria-hidden="true">/</li>
+          <li><a href="/training">Training</a></li>
+          <li aria-hidden="true">/</li>
+          <li>{data.category}</li>
+          <li aria-hidden="true">/</li>
+          <li aria-current="page">{data.title}</li>
+        </ol>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="training-header">
+      <div class="container">
+        <div class="training-header-inner">
+          <div class="training-header-left">
+            <div class="training-image-wrap">
+              {data.image ? (
+                <img
+                  src={data.image}
+                  alt={`${data.title} by ${data.creator}`}
+                  class="training-header-img"
+                  width="120"
+                  height="120"
+                />
+              ) : (
+                <div class="training-img-placeholder">{data.creator.charAt(0)}</div>
+              )}
+            </div>
+            <div class="training-header-info">
+              <div class="training-header-badges">
+                <span class="format-badge">{data.format}</span>
+                <span class="category-badge">{data.category}</span>
+                {data.deannasPick && (
+                  <span class="pick-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                    Deanna's Pick
+                  </span>
+                )}
+              </div>
+              <h1 class="training-page-title">
+                {data.title} Review: {data.tagline} for Online Coaches &amp; Course Creators
+              </h1>
+              <p class="training-creator-line">by <strong>{data.creator}</strong></p>
+            </div>
+          </div>
+
+          <div class="training-header-cta">
+            <div class="price-block">
+              <span class="price-label">Investment</span>
+              <span class="price-main">{data.pricePoint}</span>
+              <span class="time-commitment">{data.timeCommitment}</span>
+            </div>
+            <a
+              href={data.affiliateUrl}
+              class="btn btn-primary btn-lg cta-btn"
+              target="_blank"
+              rel="noopener noreferrer sponsored"
+            >
+              Learn More
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="7" y1="17" x2="17" y2="7"></line>
+                <polyline points="7 7 17 7 17 17"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Body -->
+    <div class="training-body">
+      <div class="container">
+        <div class="training-layout">
+          <div class="training-main">
+            <!-- AEO opening -->
+            <section class="training-overview">
+              <p class="training-lede">{data.description}</p>
+            </section>
+
+            <!-- Deanna's Note -->
+            {data.deannasPick && data.deannasNote && (
+              <div class="deannas-note">
+                <div class="deannas-note-header">
+                  <div class="deannas-avatar" aria-hidden="true">D</div>
+                  <strong>Deanna's Note</strong>
+                </div>
+                <p>{data.deannasNote}</p>
+              </div>
+            )}
+
+            <!-- Best For / Not Ideal For -->
+            <section class="training-section">
+              <h2 class="training-section-title">Who Is {data.title} Best For?</h2>
+              <div class="fit-grid">
+                <div class="fit-card fit-good">
+                  <h3 class="fit-heading">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Best For
+                  </h3>
+                  <p>{data.bestFor}</p>
+                </div>
+                <div class="fit-card fit-bad">
+                  <h3 class="fit-heading">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                    Not Ideal For
+                  </h3>
+                  <p>{data.notIdealFor}</p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Markdown body -->
+            <div class="training-section prose">
+              <Content />
+            </div>
+
+            <!-- Affiliate disclosure -->
+            {data.affiliateRelationship && (
+              <AffiliateDisclosure class="training-disclosure" />
+            )}
+
+            <!-- Final CTA -->
+            <div class="training-cta-block">
+              <h2>Ready to learn more about {data.title}?</h2>
+              <p>Click below to get full details, current pricing, and enrollment information.</p>
+              <a
+                href={data.affiliateUrl}
+                class="btn btn-primary btn-lg"
+                target="_blank"
+                rel="noopener noreferrer sponsored"
+              >
+                Learn More About {data.title}
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Sidebar -->
+          <aside class="training-sidebar">
+            <div class="sidebar-card">
+              <h3 class="sidebar-title">Program Details</h3>
+              <dl class="facts-list">
+                <div class="fact-row">
+                  <dt>Creator</dt>
+                  <dd>{data.creator}</dd>
+                </div>
+                <div class="fact-row">
+                  <dt>Format</dt>
+                  <dd>{data.format}</dd>
+                </div>
+                <div class="fact-row">
+                  <dt>Category</dt>
+                  <dd>{data.category}</dd>
+                </div>
+                <div class="fact-row">
+                  <dt>Investment</dt>
+                  <dd><strong>{data.pricePoint}</strong></dd>
+                </div>
+                <div class="fact-row">
+                  <dt>Time</dt>
+                  <dd>{data.timeCommitment}</dd>
+                </div>
+                {data.deannasPick && (
+                  <div class="fact-row">
+                    <dt>Deanna's Pick</dt>
+                    <dd>
+                      <span class="pick-tag">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                        Yes
+                      </span>
+                    </dd>
+                  </div>
+                )}
+                {data.affiliateRelationship && (
+                  <div class="fact-row">
+                    <dt>Affiliate Link</dt>
+                    <dd>
+                      <a href="/affiliate-disclosure" class="fact-link">Yes — see disclosure</a>
+                    </dd>
+                  </div>
+                )}
+              </dl>
+              <a
+                href={data.affiliateUrl}
+                class="btn btn-primary btn-md sidebar-cta"
+                target="_blank"
+                rel="noopener noreferrer sponsored"
+              >
+                Learn More
+              </a>
+            </div>
+
+            <div class="sidebar-back">
+              <a href="/training" class="back-link">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="19" y1="12" x2="5" y2="12"></line>
+                  <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to All Training
+              </a>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .training-page { padding-bottom: 4rem; }
+
+  .breadcrumb-nav {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    padding: 0.625rem 0;
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    flex-wrap: wrap;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  .breadcrumb li { display: flex; align-items: center; }
+  .breadcrumb a { color: var(--color-accent); text-decoration: none; }
+  .breadcrumb a:hover { text-decoration: underline; }
+  .breadcrumb li:last-child { color: var(--color-text); }
+
+  .training-header {
+    background: var(--color-primary);
+    color: #fff;
+    padding: 3rem 0 2.5rem;
+  }
+
+  .training-header-inner {
+    display: flex;
+    gap: 2rem;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .training-header-left {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    flex: 1;
+    min-width: 280px;
+  }
+
+  .training-image-wrap { flex-shrink: 0; }
+
+  .training-header-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.15);
+  }
+
+  .training-img-placeholder {
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    font-size: 2.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .training-header-badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+  }
+
+  .format-badge, .category-badge {
+    background: rgba(255,255,255,0.12);
+    color: #5BB8CC;
+    padding: 0.2rem 0.625rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .pick-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: #1282A2;
+    color: #fff;
+    padding: 0.2rem 0.625rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .training-page-title {
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 800;
+    line-height: 1.25;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+  }
+
+  .training-creator-line {
+    font-size: 0.9375rem;
+    color: #9ca3af;
+  }
+
+  .training-creator-line strong { color: #5BB8CC; }
+
+  .training-header-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+    min-width: 200px;
+  }
+
+  .price-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .price-label {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .price-main {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #ffffff;
+  }
+
+  .time-commitment {
+    font-size: 0.8rem;
+    color: #9ca3af;
+  }
+
+  .training-body { padding-top: 3rem; }
+
+  .training-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .training-lede {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-text);
+  }
+
+  .deannas-note {
+    margin-top: 1.5rem;
+    background: #E3F4F8;
+    border: 1px solid #B3DDE8;
+    border-radius: var(--radius);
+    padding: 1.25rem;
+  }
+
+  .deannas-note-header {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--color-accent);
+  }
+
+  .deannas-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .deannas-note p {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: #064B6B;
+    font-style: italic;
+  }
+
+  .training-section { margin-top: 2.5rem; }
+
+  .training-section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-accent-light);
+  }
+
+  .fit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .fit-card {
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    border: 1px solid;
+  }
+
+  .fit-good { background: #f0fdf4; border-color: #bbf7d0; }
+  .fit-bad { background: #fef2f2; border-color: #fecaca; }
+
+  .fit-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin-bottom: 0.625rem;
+  }
+
+  .fit-good .fit-heading { color: #166534; }
+  .fit-bad .fit-heading { color: #991b1b; }
+  .fit-card p { font-size: 1rem; line-height: 1.65; color: var(--color-text); }
+
+  .training-disclosure { margin-top: 2rem; }
+
+  .training-cta-block {
+    margin-top: 3rem;
+    background: var(--color-primary);
+    color: #fff;
+    border-radius: var(--radius);
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .training-cta-block h2 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .training-cta-block p {
+    color: #9ca3af;
+    margin-bottom: 1.5rem;
+    font-size: 0.9375rem;
+  }
+
+  /* Sidebar */
+  .sidebar-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    position: sticky;
+    top: 80px;
+  }
+
+  .sidebar-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+    padding-bottom: 0.625rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .facts-list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.25rem;
+  }
+
+  .fact-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.875rem;
+  }
+
+  .fact-row:last-child { border-bottom: none; }
+  .fact-row dt { color: var(--color-text-muted); font-weight: 500; flex-shrink: 0; }
+  .fact-row dd { color: var(--color-text); text-align: right; }
+
+  .pick-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .fact-link { color: var(--color-accent); text-decoration: underline; }
+
+  .sidebar-cta { width: 100%; justify-content: center; }
+
+  .sidebar-back { margin-top: 1rem; text-align: center; }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    font-size: 0.8125rem;
+    transition: color 0.15s;
+  }
+
+  .back-link:hover { color: var(--color-accent); }
+
+  @media (max-width: 900px) {
+    .training-layout { grid-template-columns: 1fr; }
+    .training-sidebar { order: -1; }
+    .sidebar-card { position: static; }
+  }
+
+  @media (max-width: 640px) {
+    .training-header-inner { flex-direction: column; }
+    .training-header-left { flex-direction: column; }
+    .fit-grid { grid-template-columns: 1fr; }
+  }
+</style>

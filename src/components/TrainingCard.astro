@@ -1,0 +1,277 @@
+---
+interface Props {
+  slug: string;
+  title: string;
+  creator: string;
+  image: string;
+  format: string;
+  category: string;
+  tagline: string;
+  deannasPick: boolean;
+  pricePoint: string;
+  affiliateUrl: string;
+  categorySlug?: string;
+}
+
+const {
+  slug,
+  title,
+  creator,
+  image,
+  format,
+  category,
+  tagline,
+  deannasPick,
+  pricePoint,
+  affiliateUrl,
+  categorySlug,
+} = Astro.props;
+
+const trainingUrl = categorySlug ? `/training/${categorySlug}/${slug}` : `/training/${slug}`;
+---
+
+<article class="training-card">
+  <div class="training-image-wrap">
+    {image ? (
+      <img
+        src={image}
+        alt={`${title} by ${creator}`}
+        class="training-image"
+        width="300"
+        height="180"
+        loading="lazy"
+      />
+    ) : (
+      <div class="training-image-placeholder" aria-hidden="true">
+        <span>{creator.charAt(0)}</span>
+      </div>
+    )}
+    {deannasPick && (
+      <span class="badge-pick-overlay">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+        Deanna's Pick
+      </span>
+    )}
+  </div>
+
+  <div class="training-card-body">
+    <div class="training-meta">
+      <span class="format-badge">{format}</span>
+      <span class="category-label">{category}</span>
+    </div>
+    <h3 class="training-title">
+      <a href={trainingUrl}>{title}</a>
+    </h3>
+    <p class="training-creator">by {creator}</p>
+    <p class="training-tagline">{tagline}</p>
+  </div>
+
+  <div class="training-card-footer">
+    <div class="training-price">
+      <span class="price-label">Investment</span>
+      <span class="price-value">{pricePoint}</span>
+    </div>
+    <div class="training-actions">
+      <a href={affiliateUrl} class="btn btn-primary btn-sm" target="_blank" rel="noopener noreferrer sponsored">
+        Learn More
+      </a>
+      <a href={trainingUrl} class="btn btn-ghost btn-sm">
+        Read Review
+      </a>
+    </div>
+  </div>
+</article>
+
+<style>
+  .training-card {
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+  }
+
+  .training-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 31, 84, 0.1);
+    border-color: #93D2DE;
+    transform: translateY(-1px);
+  }
+
+  .training-image-wrap {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--color-accent-light);
+  }
+
+  .training-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .training-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #E3F4F8 0%, #B3DDE8 100%);
+  }
+
+  .training-image-placeholder span {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--color-accent);
+    opacity: 0.4;
+  }
+
+  .badge-pick-overlay {
+    position: absolute;
+    top: 0.625rem;
+    left: 0.625rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: #1282A2;
+    color: #ffffff;
+    padding: 0.25rem 0.625rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .training-card-body {
+    padding: 1.25rem 1.25rem 0.75rem;
+    flex: 1;
+  }
+
+  .training-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .format-badge {
+    background: var(--color-accent-light);
+    color: #034078;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .category-label {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  .training-title {
+    font-size: 1.0625rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+    line-height: 1.3;
+  }
+
+  .training-title a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .training-title a:hover {
+    color: var(--color-accent);
+  }
+
+  .training-creator {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin: 0 0 0.5rem;
+    font-style: italic;
+  }
+
+  .training-tagline {
+    font-size: 1rem;
+    color: var(--color-text);
+    margin: 0;
+    line-height: 1.65;
+  }
+
+  .training-card-footer {
+    padding: 0.75rem 1.25rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border-top: 1px solid var(--color-border);
+    flex-wrap: wrap;
+  }
+
+  .training-price {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .price-label {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .price-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .training-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+  }
+
+  .btn-sm {
+    padding: 0.45rem 0.875rem;
+    font-size: 0.9375rem;
+    font-weight: 700;
+  }
+
+  .btn-primary {
+    background: #1282A2;
+    color: #ffffff;
+  }
+
+  .btn-primary:hover {
+    background: #0e6b87;
+    box-shadow: 0 2px 8px rgba(18, 130, 162, 0.3);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: #1282A2;
+    border: 1px solid #B3DDE8;
+  }
+
+  .btn-ghost:hover {
+    background: #E3F4F8;
+  }
+</style>

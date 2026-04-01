@@ -1,0 +1,462 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolCard from '../components/ToolCard.astro';
+import TrainingCard from '../components/TrainingCard.astro';
+import { getCollection } from 'astro:content';
+import { slugify } from '../utils/slugify';
+
+const allTools = await getCollection('tools');
+const allTraining = await getCollection('training');
+const allBlog = await getCollection('blog');
+
+const featuredTools = allTools.filter((t) => t.data.deannasPick);
+const featuredTraining = allTraining.filter((t) => t.data.deannasPick);
+const latestPosts = allBlog
+  .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
+  .slice(0, 3);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Online Marketing Directory',
+  url: 'https://onlinemarketingdirectory.com',
+  description:
+    'Honest reviews of marketing tools and training programs for online coaches, course creators, and consultants.',
+};
+---
+
+<BaseLayout
+  title="Online Marketing Directory — Tools & Training for Course Creators"
+  description="Find the right marketing tools and training programs for your online business. Honest, in-depth reviews of the platforms and courses that top coaches and course creators actually use."
+  schema={schema}
+>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <p class="hero-eyebrow">The Trusted Resource for Online Business Builders</p>
+        <h1 class="hero-title">
+          Find the Right Tools to Build Your<br />
+          <span class="hero-title-accent">Online Business</span>
+        </h1>
+        <p class="hero-subtitle">
+          Honest, in-depth reviews of the marketing tools and training programs that help
+          coaches, course creators, and consultants build profitable online businesses — without the guesswork.
+        </p>
+        <div class="hero-ctas">
+          <a href="/tools" class="btn btn-primary btn-lg">Browse Tool Directory</a>
+          <a href="/training" class="btn btn-secondary btn-lg">Explore Training</a>
+        </div>
+        <p class="hero-note">
+          All reviews are personally vetted. Some links are affiliate links —
+          <a href="/affiliate-disclosure">see disclosure</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About intro -->
+  <section class="intro-section section-sm">
+    <div class="container">
+      <div class="intro-card">
+        <div class="intro-avatar" aria-hidden="true">D</div>
+        <div class="intro-content">
+          <h2 class="intro-heading">Hi, I'm Deanna</h2>
+          <p>
+            After years of building my own online coaching business, I got tired of spending hundreds of dollars on tools that didn't deliver — and wasting months on courses that were all hype.
+          </p>
+          <p>
+            This directory is my curated, honest answer to "what tools should I actually use?" I've personally tested or thoroughly researched everything here. When I love something, I'll tell you why. When something has real limitations, I'll tell you that too.
+          </p>
+          <p>
+            <a href="/blog" class="intro-link">Read the latest from the blog &rarr;</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deanna's Picks: Tools -->
+  {featuredTools.length > 0 && (
+    <section class="section picks-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="pick-badge-header">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#1282A2" aria-hidden="true">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            Deanna's Picks
+          </div>
+          <h2 class="section-title">Top Recommended Tools</h2>
+          <p class="section-subtitle">
+            The tools I recommend most often to coaches, course creators, and consultants.
+          </p>
+        </div>
+        <div class="grid-3">
+          {featuredTools.map((tool) => (
+            <ToolCard
+              slug={tool.slug}
+              title={tool.data.title}
+              logo={tool.data.logo}
+              category={tool.data.category}
+              tagline={tool.data.tagline}
+              deannasPick={tool.data.deannasPick}
+              freePlan={tool.data.freePlan}
+              startingPrice={tool.data.startingPrice}
+              affiliateUrl={tool.data.affiliateUrl}
+              categorySlug={slugify(tool.data.category)}
+              data-subcategory={tool.data.subcategory}
+            />
+          ))}
+        </div>
+        <div class="section-footer-link">
+          <a href="/tools" class="btn btn-ghost btn-md">View All Tools &rarr;</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Deanna's Picks: Training -->
+  {featuredTraining.length > 0 && (
+    <section class="section picks-section picks-section-alt">
+      <div class="container">
+        <div class="section-header">
+          <div class="pick-badge-header">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#1282A2" aria-hidden="true">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            Deanna's Picks
+          </div>
+          <h2 class="section-title">Top Recommended Training</h2>
+          <p class="section-subtitle">
+            The courses and programs that have made the biggest impact on my business and the businesses of coaches I work with.
+          </p>
+        </div>
+        <div class="grid-2">
+          {featuredTraining.map((program) => (
+            <TrainingCard
+              slug={program.slug}
+              title={program.data.title}
+              creator={program.data.creator}
+              image={program.data.image}
+              format={program.data.format}
+              category={program.data.category}
+              tagline={program.data.tagline}
+              deannasPick={program.data.deannasPick}
+              pricePoint={program.data.pricePoint}
+              affiliateUrl={program.data.affiliateUrl}
+              categorySlug={slugify(program.data.category)}
+            />
+          ))}
+        </div>
+        <div class="section-footer-link">
+          <a href="/training" class="btn btn-ghost btn-md">View All Training &rarr;</a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Latest Blog Posts -->
+  {latestPosts.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">From the Blog</h2>
+          <p class="section-subtitle">
+            Practical guides, tool comparisons, and honest takes on building your online business.
+          </p>
+        </div>
+        <div class="grid-3">
+          {latestPosts.map((post) => (
+            <article class="blog-card">
+              {post.data.featuredImage && (
+                <a href={`/blog/${post.slug}`} class="blog-card-img-link" tabindex="-1" aria-hidden="true">
+                  <img
+                    src={post.data.featuredImage}
+                    alt=""
+                    class="blog-card-img"
+                    width="400"
+                    height="225"
+                    loading="lazy"
+                  />
+                </a>
+              )}
+              <div class="blog-card-body">
+                {post.data.tags && post.data.tags.length > 0 && (
+                  <div class="blog-tags">
+                    {post.data.tags.slice(0, 2).map((tag) => (
+                      <span class="blog-tag">{tag}</span>
+                    ))}
+                  </div>
+                )}
+                <h3 class="blog-card-title">
+                  <a href={`/blog/${post.slug}`}>{post.data.title}</a>
+                </h3>
+                <p class="blog-card-desc">{post.data.description}</p>
+                <div class="blog-card-meta">
+                  <span>{post.data.author}</span>
+                  <span>&middot;</span>
+                  <time datetime={post.data.pubDate.toISOString()}>
+                    {post.data.pubDate.toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                    })}
+                  </time>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div class="section-footer-link">
+          <a href="/blog" class="btn btn-ghost btn-md">View All Posts &rarr;</a>
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #001F54 0%, #034078 50%, #001F54 100%);
+    color: #ffffff;
+    padding: 5rem 0 6rem;
+  }
+
+  .hero-content {
+    max-width: 700px;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #5BB8CC;
+    margin-bottom: 1rem;
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-title-accent {
+    color: #5BB8CC;
+  }
+
+  .hero-subtitle {
+    font-size: 1.125rem;
+    color: #B8CAE8;
+    line-height: 1.65;
+    margin-bottom: 2rem;
+    max-width: 600px;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .hero-note {
+    font-size: 0.8125rem;
+    color: #8AACCC;
+  }
+
+  .hero-note a {
+    color: #5BB8CC;
+    text-decoration: underline;
+  }
+
+  /* Intro */
+  .intro-section {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .intro-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    max-width: 780px;
+  }
+
+  .intro-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    color: #ffffff;
+    font-size: 1.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .intro-heading {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .intro-content p {
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+  }
+
+  .intro-link {
+    color: var(--color-accent);
+    text-decoration: underline;
+    font-weight: 600;
+    font-size: 0.9375rem;
+  }
+
+  /* Picks */
+  .picks-section {
+    background: var(--color-bg);
+  }
+
+  .picks-section-alt {
+    background: var(--color-surface);
+  }
+
+  .section-header {
+    margin-bottom: 2rem;
+  }
+
+  .pick-badge-header {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-footer-link {
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  /* Blog cards */
+  .blog-card {
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.2s, transform 0.15s;
+  }
+
+  .blog-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+  }
+
+  .blog-card-img-link {
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--color-surface);
+  }
+
+  .blog-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+
+  .blog-card:hover .blog-card-img {
+    transform: scale(1.03);
+  }
+
+  .blog-card-body {
+    padding: 1.25rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .blog-tags {
+    display: flex;
+    gap: 0.375rem;
+    flex-wrap: wrap;
+  }
+
+  .blog-tag {
+    background: var(--color-accent-light);
+    color: var(--color-accent);
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .blog-card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.35;
+    flex: 1;
+  }
+
+  .blog-card-title a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .blog-card-title a:hover {
+    color: var(--color-accent);
+  }
+
+  .blog-card-desc {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .blog-card-meta {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    display: flex;
+    gap: 0.375rem;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding: 3.5rem 0 4rem;
+    }
+
+    .intro-card {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

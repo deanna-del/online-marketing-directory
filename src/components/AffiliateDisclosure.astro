@@ -1,0 +1,50 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<aside class:list={['affiliate-disclosure', className]} role="note" aria-label="Affiliate disclosure">
+  <svg class="disclosure-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="10"></circle>
+    <line x1="12" y1="8" x2="12" y2="12"></line>
+    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+  </svg>
+  <p>
+    <strong>Affiliate Disclosure:</strong> This page contains affiliate links. If you purchase through our links, we may earn a commission at no extra cost to you. We only recommend tools we've personally vetted.
+    <a href="/affiliate-disclosure">Learn more</a>.
+  </p>
+</aside>
+
+<style>
+  .affiliate-disclosure {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    background: #E3F4F8;
+    border: 1px solid #B3DDE8;
+    border-radius: var(--radius);
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+    color: #064B6B;
+    line-height: 1.65;
+  }
+
+  .disclosure-icon {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: #1282A2;
+  }
+
+  .affiliate-disclosure p {
+    margin: 0;
+    color: #064B6B;
+  }
+
+  .affiliate-disclosure a {
+    color: #1282A2;
+    text-decoration: underline;
+    font-weight: 500;
+  }
+</style>
