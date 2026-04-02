@@ -200,11 +200,36 @@ const allSubcategories = Object.values(subcategoriesByCategory).flat();
     if (resultsNum) resultsNum.textContent = String(visibleCount);
   }
 
+  const categorySlugMap: Record<string, string> = {
+    'business-foundation': 'Business Foundation',
+    'marketing-lead-generation': 'Marketing & Lead Generation',
+    'content-creation': 'Content Creation',
+    'ai-tools-by-use-case': 'AI Tools by Use Case',
+    'operations-productivity': 'Operations & Productivity',
+  };
+  const labelToSlug: Record<string, string> = Object.fromEntries(
+    Object.entries(categorySlugMap).map(([slug, label]) => [label, slug])
+  );
+
+  function updateURL() {
+    const params = new URLSearchParams(window.location.search);
+    if (filterCategory && filterCategory.value) {
+      params.set('category', labelToSlug[filterCategory.value] || filterCategory.value);
+    } else {
+      params.delete('category');
+    }
+    const newUrl = params.toString()
+      ? `${window.location.pathname}?${params.toString()}`
+      : window.location.pathname;
+    history.replaceState(null, '', newUrl);
+  }
+
   if (searchInput) searchInput.addEventListener('input', filterCards);
   if (filterCategory) {
     filterCategory.addEventListener('change', () => {
       updateSubcategoryOptions();
       filterCards();
+      updateURL();
     });
   }
   if (filterSubcategory) filterSubcategory.addEventListener('change', filterCards);
@@ -217,7 +242,17 @@ const allSubcategories = Object.values(subcategoriesByCategory).flat();
       if (filterFreePlan) filterFreePlan.value = '';
       updateSubcategoryOptions();
       filterCards();
+      updateURL();
     });
+  }
+
+  // Read ?category= from URL on page load and pre-select the dropdown
+  const urlParams = new URLSearchParams(window.location.search);
+  const categoryParam = urlParams.get('category');
+  if (categoryParam && categorySlugMap[categoryParam] && filterCategory) {
+    filterCategory.value = categorySlugMap[categoryParam];
+    updateSubcategoryOptions();
+    filterCards();
   }
   }); // end DOMContentLoaded
 </script>
