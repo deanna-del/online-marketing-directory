@@ -6,7 +6,7 @@ tagline: All-in-one platform for courses, coaching, and digital products
 description: Kajabi is the leading all-in-one business platform built specifically for knowledge entrepreneurs. It combines course hosting, email marketing, landing pages, website building, community features, and payment processing into one seamless ecosystem. Instead of piecing together a dozen tools, Kajabi gives you everything you need to create, market, and sell your online courses, coaching programs, memberships, and digital products — all under your own brand.
 category: Business Foundation
 subcategory: All-in-One Platforms
-startingPrice: $89/month
+startingPrice: $99 for 3 months
 freePlan: No
 pricingUrl: https://kajabi.com/pricing
 bestFor: Course creators, coaches, and consultants who want one platform for everything and are ready to invest in a premium solution that scales with their business.
