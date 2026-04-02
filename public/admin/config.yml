@@ -2,8 +2,6 @@ backend:
   name: github
   repo: deanna-del/online-marketing-directory
   branch: main
-  auth_type: pkce
-  client_id: Ov23liZPaDI3gl2opk0q
 
 media_folder: public/uploads
 public_folder: /uploads
