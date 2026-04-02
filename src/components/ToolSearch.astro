@@ -200,14 +200,14 @@ const allSubcategories = Object.values(subcategoriesByCategory).flat();
     if (resultsNum) resultsNum.textContent = String(visibleCount);
   }
 
-  const categorySlugMap: Record<string, string> = {
+  const categorySlugMap = {
     'business-foundation': 'Business Foundation',
     'marketing-lead-generation': 'Marketing & Lead Generation',
     'content-creation': 'Content Creation',
     'ai-tools-by-use-case': 'AI Tools by Use Case',
     'operations-productivity': 'Operations & Productivity',
   };
-  const labelToSlug: Record<string, string> = Object.fromEntries(
+  const labelToSlug = Object.fromEntries(
     Object.entries(categorySlugMap).map(([slug, label]) => [label, slug])
   );
 
