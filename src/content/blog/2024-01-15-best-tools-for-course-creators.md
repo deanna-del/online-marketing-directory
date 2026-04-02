@@ -1,10 +1,13 @@
 ---
-title: "The 10 Best Tools for Course Creators in 2024"
-description: "Building an online course business requires the right tools. Here are the platforms and apps that will save you time and help you grow faster."
+title: The 10 Best Tools for Course Creators in 2024
+description: Building an online course business requires the right tools. Here are the platforms and apps that will save you time and help you grow faster.
 pubDate: 2024-01-15
-author: "Deanna"
-featuredImage: "/uploads/blog-course-creator-tools.jpg"
-tags: ["tools", "course creation", "getting started"]
+author: Deanna
+featuredImage: https://images.unsplash.com/photo-1501516069922-a9982bd6f3bd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5MTM5MDd8MHwxfHNlYXJjaHwzNXx8dG9vbHN8ZW58MHx8fHwxNzc1MTU0MzgxfDA&ixlib=rb-4.1.0&q=80&w=1080
+tags:
+  - tools
+  - course creation
+  - getting started
 ---
 
 Starting an online course business is exciting — and overwhelming. There are hundreds of tools claiming to be the best, and the wrong choices can cost you thousands of dollars and months of wasted time.
