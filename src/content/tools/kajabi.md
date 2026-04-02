@@ -1,6 +1,6 @@
 ---
 title: Kajabi
-logo: /kajabi.com
+logo: /uploads/Kajabi-logo.png
 affiliateUrl: https://kajabi.com
 tagline: All-in-one platform for courses, coaching, and digital products
 description: Kajabi is the leading all-in-one business platform built specifically for knowledge entrepreneurs. It combines course hosting, email marketing, landing pages, website building, community features, and payment processing into one seamless ecosystem. Instead of piecing together a dozen tools, Kajabi gives you everything you need to create, market, and sell your online courses, coaching programs, memberships, and digital products — all under your own brand.
