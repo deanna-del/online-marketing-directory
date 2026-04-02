@@ -31,7 +31,7 @@ const {
   categorySlug,
 } = Astro.props;
 
-const logoSrc = logo || (domain ? `https://logo.clearbit.com/${domain}` : null);
+const logoSrc = logo || (domain ? `https://img.logo.dev/${domain}?token=pk_public` : null);
 
 const toolUrl = categorySlug ? `/tools/${categorySlug}/${slug}` : `/tools/${slug}`;
 ---
