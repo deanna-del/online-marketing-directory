@@ -1,6 +1,6 @@
 ---
 title: Canva
-logo: /uploads/Canva - images.jfif
+logo: /uploads/Canva-logo-2.png
 affiliateUrl: https://canva.com
 tagline: Drag-and-drop design tool for non-designers creating professional visuals
 description: Canva is a web-based graphic design platform that empowers non-designers to create professional-quality visuals for every stage of their business. From social media graphics and presentation slides to course workbooks, lead magnets, email headers, and brand kits, Canva offers thousands of templates alongside a simple drag-and-drop interface. The Pro version adds brand kit management, background removal, AI design tools, and a magic resize feature that adapts designs across formats instantly.
