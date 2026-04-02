@@ -73,6 +73,7 @@ collections:
       - { label: "Integrations", name: "integrations", widget: "text", required: false }
       - { label: "Screenshot", name: "screenshot", widget: "image", required: false }
       - { label: "Affiliate Relationship", name: "affiliateRelationship", widget: "boolean", default: false, required: false }
+      - { label: "Date Added", name: "pubDate", widget: "datetime", required: false }
       - { label: "Body", name: "body", widget: "markdown", required: false }
 
   - name: training

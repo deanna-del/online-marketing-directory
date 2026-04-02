@@ -12,7 +12,13 @@ const allTools = await getCollection('tools');
 const allTraining = await getCollection('training');
 const allBlog = await getCollection('blog');
 
-const featuredTools = allTools.filter((t) => t.data.deannasPick);
+const featuredTools = allTools
+  .filter((t) => t.data.deannasPick)
+  .sort((a, b) => {
+    const aDate = a.data.pubDate?.getTime() ?? 0;
+    const bDate = b.data.pubDate?.getTime() ?? 0;
+    return bDate - aDate;
+  });
 const featuredTraining = allTraining.filter((t) => t.data.deannasPick);
 const latestPosts = allBlog
   .sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime())
