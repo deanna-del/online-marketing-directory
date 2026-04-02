@@ -15,7 +15,8 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: "Tool Name", name: "title", widget: "string" }
-      - { label: "Logo", name: "logo", widget: "image", choose_url: true }
+      - { label: "Logo", name: "logo", widget: "image", choose_url: true, required: false }
+      - { label: "Domain", name: "domain", widget: "string", required: false, hint: "e.g. kajabi.com — auto-fetches logo from Clearbit when no logo is uploaded" }
       - { label: "Affiliate URL", name: "affiliateUrl", widget: "string" }
       - { label: "One-Line Description (max 15 words)", name: "tagline", widget: "string" }
       - { label: "Full Description", name: "description", widget: "text" }

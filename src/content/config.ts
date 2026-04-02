@@ -4,7 +4,8 @@ const tools = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
-    logo: z.string(),
+    logo: z.string().optional(),
+    domain: z.string().optional(),
     affiliateUrl: z.string().url(),
     tagline: z.string(),
     description: z.string(),

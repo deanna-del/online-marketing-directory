@@ -66,17 +66,17 @@ const schema = {
         <div class="tool-header-inner">
           <div class="tool-header-left">
             <div class="tool-logo-wrap">
-              {data.logo ? (
+              {(data.logo || data.domain) ? (
                 <img
-                  src={data.logo}
+                  src={data.logo || `https://logo.clearbit.com/${data.domain}`}
                   alt={`${data.title} logo`}
                   class="tool-logo"
                   width="80"
                   height="80"
+                  onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
                 />
-              ) : (
-                <div class="tool-logo-placeholder">{data.title.charAt(0)}</div>
-              )}
+              ) : null}
+              <div class="tool-logo-placeholder" style={(data.logo || data.domain) ? 'display:none' : ''}>{data.title.charAt(0)}</div>
             </div>
             <div class="tool-header-info">
               <div class="tool-header-badges">

@@ -2,7 +2,8 @@
 interface Props {
   slug: string;
   title: string;
-  logo: string;
+  logo?: string;
+  domain?: string;
   category: string;
   tagline: string;
   deannasPick: boolean;
@@ -20,6 +21,7 @@ const {
   slug,
   title,
   logo,
+  domain,
   category,
   tagline,
   deannasPick,
@@ -28,6 +30,8 @@ const {
   affiliateUrl,
   categorySlug,
 } = Astro.props;
+
+const logoSrc = logo || (domain ? `https://logo.clearbit.com/${domain}` : null);
 
 const toolUrl = categorySlug ? `/tools/${categorySlug}/${slug}` : `/tools/${slug}`;
 ---
@@ -40,13 +44,18 @@ const toolUrl = categorySlug ? `/tools/${categorySlug}/${slug}` : `/tools/${slug
   data-freePlan={freePlan}
 >
   <div class="tool-logo-wrap">
-    {logo ? (
-      <img src={logo} alt={`${title} logo`} class="tool-logo" loading="lazy" />
-    ) : (
-      <div class="tool-logo-placeholder" aria-hidden="true">
-        {title.charAt(0)}
-      </div>
-    )}
+    {logoSrc ? (
+      <img
+        src={logoSrc}
+        alt={`${title} logo`}
+        class="tool-logo"
+        loading="lazy"
+        onerror="this.style.display='none';this.parentElement.querySelector('.tool-logo-placeholder').style.display='flex'"
+      />
+    ) : null}
+    <div class="tool-logo-placeholder" aria-hidden="true" style={logoSrc ? 'display:none' : ''}>
+      {title.charAt(0)}
+    </div>
   </div>
 
   <div class="tool-card-header">
