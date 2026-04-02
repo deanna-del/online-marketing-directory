@@ -2,8 +2,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ToolCard from '../components/ToolCard.astro';
 import TrainingCard from '../components/TrainingCard.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import { slugify } from '../utils/slugify';
+
+const homepageEntry = await getEntry('homepage', 'index');
+const hp = homepageEntry!.data;
 
 const allTools = await getCollection('tools');
 const allTraining = await getCollection('training');
@@ -26,8 +29,8 @@ const schema = {
 ---
 
 <BaseLayout
-  title="Online Marketing Directory — Tools & Training for Course Creators"
-  description="Find the right marketing tools and training programs for your online business. Honest, in-depth reviews of the platforms and courses that top coaches and course creators actually use."
+  title={hp.metaTitle}
+  description={hp.metaDescription}
   schema={schema}
 >
   <!-- Hero -->
@@ -35,17 +38,11 @@ const schema = {
     <div class="container">
       <div class="hero-content">
         <p class="hero-eyebrow">The Trusted Resource for Online Business Builders</p>
-        <h1 class="hero-title">
-          Find the Right Tools to Build Your<br />
-          <span class="hero-title-accent">Online Business</span>
-        </h1>
-        <p class="hero-subtitle">
-          Honest, in-depth reviews of the marketing tools and training programs that help
-          coaches, course creators, and consultants build profitable online businesses — without the guesswork.
-        </p>
+        <h1 class="hero-title">{hp.heroHeadline}</h1>
+        <p class="hero-subtitle">{hp.heroSubheadline}</p>
         <div class="hero-ctas">
-          <a href="/tools" class="btn btn-primary btn-lg">Browse Tool Directory</a>
-          <a href="/training" class="btn btn-secondary btn-lg">Explore Training</a>
+          <a href="/tools" class="btn btn-primary btn-lg">{hp.heroPrimaryButtonLabel}</a>
+          <a href="/training" class="btn btn-secondary btn-lg">{hp.heroSecondaryButtonLabel}</a>
         </div>
         <p class="hero-note">
           All reviews are personally vetted. Some links are affiliate links —
@@ -87,10 +84,8 @@ const schema = {
             </svg>
             Deanna's Picks
           </div>
-          <h2 class="section-title">Top Recommended Tools</h2>
-          <p class="section-subtitle">
-            The tools I recommend most often to coaches, course creators, and consultants.
-          </p>
+          <h2 class="section-title">{hp.featuredSectionTitle}</h2>
+          <p class="section-subtitle">{hp.featuredSectionDescription}</p>
         </div>
         <div class="grid-3">
           {featuredTools.map((tool) => (

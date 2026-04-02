@@ -108,6 +108,38 @@ collections:
       - { label: "Affiliate Relationship", name: "affiliateRelationship", widget: "boolean", default: false, required: false }
       - { label: "Body", name: "body", widget: "markdown", required: false }
 
+  - name: homepage
+    label: Homepage Settings
+    files:
+      - name: homepage
+        label: Homepage Settings
+        file: src/content/homepage/index.md
+        fields:
+          - label: "Hero Headline"
+            name: "heroHeadline"
+            widget: "string"
+          - label: "Hero Subheadline"
+            name: "heroSubheadline"
+            widget: "string"
+          - label: "Primary Button Label"
+            name: "heroPrimaryButtonLabel"
+            widget: "string"
+          - label: "Secondary Button Label"
+            name: "heroSecondaryButtonLabel"
+            widget: "string"
+          - label: "Featured Section Title"
+            name: "featuredSectionTitle"
+            widget: "string"
+          - label: "Featured Section Description"
+            name: "featuredSectionDescription"
+            widget: "string"
+          - label: "Meta Title"
+            name: "metaTitle"
+            widget: "string"
+          - label: "Meta Description"
+            name: "metaDescription"
+            widget: "string"
+
   - name: blog
     label: Blog Posts
     label_singular: Blog Post

@@ -68,4 +68,18 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { tools, training, blog };
+const homepage = defineCollection({
+  type: 'content',
+  schema: z.object({
+    heroHeadline: z.string(),
+    heroSubheadline: z.string(),
+    heroPrimaryButtonLabel: z.string(),
+    heroSecondaryButtonLabel: z.string(),
+    featuredSectionTitle: z.string(),
+    featuredSectionDescription: z.string(),
+    metaTitle: z.string(),
+    metaDescription: z.string(),
+  }),
+});
+
+export const collections = { tools, training, blog, homepage };
