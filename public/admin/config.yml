@@ -15,7 +15,7 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: "Tool Name", name: "title", widget: "string" }
-      - { label: "Logo", name: "logo", widget: "image" }
+      - { label: "Logo", name: "logo", widget: "image", choose_url: true }
       - { label: "Affiliate URL", name: "affiliateUrl", widget: "string" }
       - { label: "One-Line Description (max 15 words)", name: "tagline", widget: "string" }
       - { label: "Full Description", name: "description", widget: "text" }
